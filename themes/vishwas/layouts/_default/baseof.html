@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ site.Title }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}">
+  <link rel="canonical" href="{{ .Permalink }}">
+
+  {{ if .IsPage }}
+  <meta property="og:type" content="article">
+  {{ else }}
+  <meta property="og:type" content="website">
+  {{ end }}
+  <meta property="og:title" content="{{ .Title }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:site_name" content="{{ site.Title }}">
+  <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Summary }}{{ end }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="{{ site.Params.twitter }}">
+  <meta name="twitter:title" content="{{ .Title }}">
+  <meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Summary }}{{ end }}">
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  {{ $css := resources.Get "css/style.css" }}
+  {{ if .IsPage }}
+  {{ $syntax := resources.Get "css/syntax.css" }}
+  <link rel="stylesheet" href="{{ $syntax.RelPermalink }}">
+  {{ end }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="site-name" href="/">{{ site.Title }}</a>
+    <ul>
+      <li><a href="/about/">about</a></li>
+    </ul>
+  </nav>
+
+  {{ block "main" . }}{{ end }}
+
+  <footer>
+    {{ if eq .RelPermalink "/about/" }}
+    <blockquote><em>"Stop, you're not good at it. But if I stop, how will I ever get good?"</em></blockquote>
+    {{ end }}
+    © vishwas p.
+  </footer>
+</div>
+{{ if .IsPage }}
+<script>
+document.querySelectorAll('.highlight').forEach(block => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'copy';
+  btn.onclick = () => navigator.clipboard.writeText(block.querySelector('code').innerText).then(() => {
+    btn.textContent = 'copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+  });
+  block.appendChild(btn);
+});
+</script>
+{{ end }}
+</body>
+</html>

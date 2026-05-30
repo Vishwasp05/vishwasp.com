@@ -1,0 +1,15 @@
+baseURL = "https://vishwasp.com"
+languageCode = "en-us"
+title = "vishwas p."
+theme = "vishwas"
+
+[markup]
+  [markup.highlight]
+    style = "github"
+    noClasses = false
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[params]
+  author = "Vishwas P"
+  twitter = "@ch0nky05"
